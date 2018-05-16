@@ -1,0 +1,17 @@
+<meta charset = "UTF-8">
+
+<script>
+
+var dividendo, divisor, r, i;
+r = 0;
+
+dividendo = parseInt(prompt("digite o dividendo"));
+divisor = parseInt(prompt("digite o divisor"));
+function resto (a,b) { r = a % b; return r;} 
+
+	for (i=0;i<=dividendo;i=i+1) 	{ 
+		if (resto(dividendo,i) == 0) { document.write(i + " é divisor de " + dividendo + "<br>"); }
+									}
+							
+
+</script>
