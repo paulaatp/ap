@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <math.h>
+
+int main ()     {
+
+int n1;
+
+do  {
+printf("Digite o numero: ");
+scanf("%d", &n1);
+if (n1<=0){printf("o numero e invalido\n");}
+}
+while (n1<0);
+
+if(n1>0) {printf("a raiz quadrada do numero %d e %.2lf", n1, sqrt(n1));}
+                }
