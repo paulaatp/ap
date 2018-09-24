@@ -20,7 +20,7 @@ main(){
 	// OU ASSIM
 	/*
 	for(i=0;i<5;i++){
-	  for(j=0;j<5;j++){
+	  for(j=0;j<4;j++){
 		 if(vetor[i]<vetor[j]) {
 			ord=vetor[i];
 			vetor[i]=vetor[j];
