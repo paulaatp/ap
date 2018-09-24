@@ -3,9 +3,9 @@ algoritmos
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//ORDENANDO VETOR
+
 main(){
-	
+	//ORDENANDO VETOR
 	int vetor[5]={9,7,3,5,1}, i, ord, j;
 	//ASSIM
 	for(i=0;i<5;i++){
