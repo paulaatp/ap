@@ -1,0 +1,62 @@
+package trabalho_lp1_questoes;
+
+import java.util.Scanner;
+
+public class questao_07 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int senha1, senha2, achou=0, jogar=0;
+		Scanner sc = new Scanner(System.in);
+		
+		do {
+		
+			System.out.println("Jogador 1, digite a senha:");
+			senha1= sc.nextInt();
+			if((senha1<0)||(senha1>100)) {
+				 System.out.println("VALOR INVÁLIDO");
+					do {
+						 System.out.println("Digite outro valor: ");
+						 senha1= sc.nextInt();
+					}while((senha1<0) || (senha1>100));
+			}
+				
+			for(int i=0;i<5;i++) {
+				System.out.println("Jogador 2, digite seu chute:");
+				senha2= sc.nextInt();
+				
+				if(senha2>senha1) {
+					if(senha2-1==senha1) {
+						System.out.println("TÁ QUENTE!!!");
+					}
+					else {
+						System.out.println("O valor digitado é maior que a senha.");
+					}
+				}
+				
+				if(senha2<senha1) {
+					if(senha2+1==senha1) {
+						System.out.println("TÁ QUENTE!!!");
+					}
+					else {
+						System.out.println("O valor digitado é menor que a senha.");
+					}
+				}
+				
+				if(senha2==senha1) {
+					System.out.println("ACERTOU MIZERÁVI!!!");
+					achou=1;
+					break;
+				}
+			}
+		
+		if(achou==0) {
+			System.out.println("Você perdeu. Tente novamente depois.");
+		}
+		
+		System.out.println("Deseja jogar novamente?(1-SIM/2-NAO):");
+		jogar= sc.nextInt();
+		} while(jogar==1);
+	}
+
+}
