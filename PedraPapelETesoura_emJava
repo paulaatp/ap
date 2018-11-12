@@ -1,0 +1,98 @@
+package trabalho_lp1_questoes;
+import java.util.Random;
+import java.util.Scanner;
+public class questao_06 {
+
+	public static int intrandInt (int min, int max) {
+		Random rand = new Random();
+		int randomNum = rand.nextInt((max - min) + 1) + min;
+		return randomNum;
+		} 
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		int Jogador, Computador, cont=0;
+		String ops[]= new String[3];
+		ops[0]="PEDRA";
+		ops[1]="PAPEL";
+		ops[2]="TESOURA";
+		
+		do {
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Jogador, digite sua escolha(0-PEDRA/1-PAPEL/2-TESOURA):");
+		Jogador = sc.nextInt();
+		if(Jogador==0) {
+			System.out.println("Você escolheu "+ ops[0]);
+		}
+		if(Jogador==1) {
+			System.out.println("Você escolheu "+ ops[1]);
+		}
+		if(Jogador==2) {
+			System.out.println("Você escolheu "+ ops[2]);
+		}
+		
+		Computador = intrandInt(0,2);
+		if(Computador==0) {
+			System.out.println("O computador escolheu "+ ops[0]);
+		}
+		if(Computador==1) {
+			System.out.println("O computador escolheu "+ ops[1]);
+		}
+		if(Computador==2) {
+			System.out.println("O computador escolheu "+ ops[2]);
+		}
+		
+		switch (Jogador){
+		case 0: 
+			switch (Computador){
+				case 0:
+					System.out.println("EMPATE");
+					break;
+				case 1:
+					System.out.println("O COMPUTADOR ganhou");
+					break;
+				case 2:
+					System.out.println("VOCÊ ganhou");
+					break;
+					default: 
+						System.out.println ("INVÁLIDO");
+			} break;
+		case 1:
+			switch(Computador) {
+				case 0: 
+					System.out.println("VOCE ganhou");
+					break;
+				case 1:
+					System.out.println("EMPATE");
+					break;
+				case 2:
+					System.out.println("O COMPUTADOR ganhou");
+					break;
+				default: 
+					System.out.println ("INVÁLIDO");
+			} break;
+		case 2:
+			switch(Computador) {
+					case 0:
+						System.out.println("O COMPUTADOR ganhou");
+						break;
+					case 1:
+						System.out.println("VOCE ganhou");
+						break;
+					case 2:
+						System.out.println("EMPATE");
+						break;
+					default: 
+			            System.out.println ("INVÁLIDO");
+			} break;
+		default: 
+			System.out.println ("INVÁLIDO");
+	}
+		System.out.println ("Deseja jogar novamente?(1-SIM/2-NAO)");
+		cont= sc.nextInt();
+		}while(cont==1);
+	}
+
+}
