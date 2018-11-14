@@ -1,0 +1,343 @@
+#include <stdio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct{ 
+int cpf;
+int tele;
+char nome[20];
+char end[30];
+char depend1[20], depend2[20];
+} TCadastroCliente;
+FILE *pcadastroCliente;
+TCadastroCliente cadastro_aux, cadastro_nulo;
+
+
+typedef struct{ 
+int codigo;
+char nomeFilme[20];
+char categoria[20];
+} TCadastroFilme;
+FILE *pcadastroFilme;
+TCadastroFilme cadastroFilme_aux, cadastroFilme_nulo;
+
+void linha()
+{ int i;
+for (i=1; i<=80; i++)
+printf("_");
+}
+	
+	void cabec()
+{ system("cls");
+printf("Locadora de DVD\n");
+linha();
+}
+void abre_arquivoCliente()
+{ pcadastroCliente = fopen("cadastroCliente.dat", "r+b");
+if (pcadastroCliente == NULL)
+pcadastroCliente = fopen("cadastroCliente.dat", "w+b");
+}
+	
+void abre_arquivoFilme()
+{ pcadastroFilme = fopen("cadastroFilme.dat", "r+b");
+if (pcadastroFilme == NULL)
+pcadastroFilme = fopen("cadastroFilme.dat", "w+b");
+}
+		
+	
+	void inserirCliente()
+{ int resp;
+do { cabec();
+printf("\n\nCadastrar novo cliente\n\n");
+printf("\nNome.....: ");
+fflush(stdin);
+gets(cadastro_aux.nome);
+printf("\nCPF: ");
+scanf("%d", &cadastro_aux.cpf);
+printf("\nTelefone....: ");
+scanf("%d", &cadastro_aux.tele);
+printf("\nEndereco.....: ");
+fflush(stdin);
+gets(cadastro_aux.end);
+printf("\nDependente 1.....: ");
+fflush(stdin);
+gets(cadastro_aux.depend1);
+printf("\nDependente 2.....: ");
+fflush(stdin);
+gets(cadastro_aux.depend2);
+fseek(pcadastroCliente, 0, SEEK_END);
+fwrite(&cadastro_aux, sizeof(TCadastroCliente), 1,pcadastroCliente);
+printf("\n\nCliente cadastrado com sucesso!\n\n");
+printf("\nDeseja cadastrar outro (1-sim/0-nao)? ");
+scanf("%d", &resp);
+} while (resp ==1);
+}
+
+void inserirDVD()
+{ int resp;
+do { cabec();
+printf("\n\nCadastrar novo filme\n\n");
+printf("\nCodigo: ");
+scanf("%d", &cadastroFilme_aux.codigo);
+printf("\nNome.....: ");
+fflush(stdin);
+gets(cadastroFilme_aux.nomeFilme);
+printf("\nCategoria.....: ");
+fflush(stdin);
+gets(cadastroFilme_aux.categoria);
+fseek(pcadastroFilme, 0, SEEK_END);
+fwrite(&cadastroFilme_aux, sizeof(TCadastroFilme), 1,pcadastroFilme);
+printf("\n\nFilme cadastrado com sucesso!\n\n");
+printf("\nDeseja cadastrar outro (1-sim/0-nao)? ");
+scanf("%d", &resp);
+} while (resp ==1);
+}
+
+int procuraCliente(int cpfp)
+{ int p;
+p = 0;
+rewind(pcadastroCliente);
+fread(&cadastro_aux, sizeof(TCadastroCliente), 1, pcadastroCliente);
+while (feof(pcadastroCliente)==0)
+{ if (cadastro_aux.cpf == cpfp)
+return p;
+else
+{ fread(&cadastro_aux, sizeof(TCadastroCliente), 1,pcadastroCliente);
+p++;
+}
+}
+return -1;
+}
+
+int procuraFilme(int ccodigo)
+{ int p;
+p = 0;
+rewind(pcadastroFilme);
+fread(&cadastroFilme_aux, sizeof(TCadastroFilme), 1, pcadastroFilme);
+while (feof(pcadastroFilme)==0)
+{ if (cadastroFilme_aux.codigo == ccodigo)
+return p;
+else
+{ fread(&cadastroFilme_aux, sizeof(TCadastroFilme), 1,pcadastroFilme);
+p++;
+}
+}
+return -1;
+}
+
+void mostreCliente(int pos)
+{ fseek(pcadastroCliente, pos*sizeof(TCadastroCliente), SEEK_SET);
+fread(&cadastro_aux, sizeof(TCadastroCliente), 1, pcadastroCliente);
+printf("\n\n");
+linha();
+printf("CPF\t\tNome\t\tTelefone\tDependente 1\tDependente 2\n");
+linha();
+printf("%d\t\t%-20s%5.1d\t%-20s%-20s\n", cadastro_aux.cpf,cadastro_aux.nome, cadastro_aux.tele, cadastro_aux.depend1, cadastro_aux.depend2);
+linha();
+}
+
+
+void mostreFilme(int pos)
+{ fseek(pcadastroFilme, pos*sizeof(TCadastroFilme), SEEK_SET);
+fread(&cadastroFilme_aux, sizeof(TCadastroFilme), 1, pcadastroFilme);
+printf("\n\n");
+linha();
+printf("Codigo\t\tNome\t\t  Categoria\n");
+linha();
+printf("%d \t\t%-20s%-20s\n", cadastroFilme_aux.codigo,cadastroFilme_aux.nomeFilme, cadastroFilme_aux.categoria);
+linha();
+}
+
+void consultarCliente()
+{ int resp, cpfcon, posicao;
+do{ cabec();
+printf("\n\nConsultar Cliente\n\n\n");
+printf("CPF do cliente: ");
+scanf("%d", &cpfcon);
+posicao = procuraCliente(cpfcon);
+if (posicao == -1)
+printf("\n\nCPF nao encontrado!\n\n");
+else
+mostreCliente(posicao);
+printf("\n\nDeseja consultar outro (1-sim/0-nao)? ");
+scanf("%d", &resp);
+} while (resp == 1);
+}
+
+void consultarFilme()
+{ int resp, codigocon, posicao;
+do{ cabec();
+printf("\n\nConsultar Cliente\n\n\n");
+printf("Codigo do filme: ");
+scanf("%d", &codigocon);
+posicao = procuraFilme(codigocon);
+if (posicao == -1)
+printf("\n\nCÓDIGO nao encontrado!\n\n");
+else
+mostreFilme(posicao);
+printf("\n\nDeseja consultar outro (1-sim/0-nao)? ");
+scanf("%d", &resp);
+} while (resp == 1);
+}
+
+void removerCliente()
+{ int cpfrem, conf, resp, posicao;
+cadastro_nulo.cpf = 0;
+cadastro_nulo.tele = 0;
+do{ cabec();
+printf("\n\nRemover Cliente\n\n\n");
+printf("CPF: ");
+scanf("%d", &cpfrem);
+posicao = procuraCliente(cpfrem);
+if (posicao == -1)
+printf("\nCliente nao encontrado!!\a");
+else
+{ mostreCliente(posicao);
+printf("\n\nDeseja remover o cliente (1-sim/0-nao)? ");
+scanf("%d", &conf);
+if (conf == 1)
+{ fseek(pcadastroCliente,posicao*sizeof(TCadastroCliente),SEEK_SET);
+fwrite(&cadastro_nulo,sizeof(TCadastroCliente), 1, pcadastroCliente);
+printf("\n\nCliente removido com sucesso!");
+}else
+printf("\nRemocao cancelada!");
+}
+printf("\n\n\nDeseja remover outro (1-sim/0-nao)? ");
+scanf("%d", &resp);
+} while (resp ==1);
+}
+
+
+void removerFilme()
+{ int codigorem, conf, resp, posicao;
+do{ cabec();
+printf("\n\nRemover Filme\n\n\n");
+printf("Codigo: ");
+scanf("%d", &codigorem);
+posicao = procuraFilme(codigorem);
+if (posicao == -1)
+printf("\nFilme nao encontrado!!\a");
+else
+{ mostreFilme(posicao);
+printf("\n\nDeseja remover o Filme (1-sim/0-nao)? ");
+scanf("%d", &conf);
+if (conf == 1)
+{ fseek(pcadastroFilme,posicao*sizeof(TCadastroFilme),SEEK_SET);
+fwrite(&cadastroFilme_nulo,sizeof(TCadastroFilme), 1, pcadastroFilme);
+printf("\n\nFilme removido com sucesso!");
+}else
+printf("\nRemocao cancelada!");
+}
+printf("\n\n\nDeseja remover outro (1-sim/0-nao)? ");
+scanf("%d", &resp);
+} while (resp ==1);
+}
+
+void alterarCliente()
+{ int cpfalt, conf, resp, posicao;
+do { cabec();
+printf("\n\nAlterar Telefone do cliente\n\n\n");
+printf("CPF: ");
+scanf("%d", &cpfalt);
+posicao = procuraCliente(cpfalt);
+if (posicao == -1)
+printf("\nCliente,nao encontrado!!\a");
+else
+{ mostreCliente(posicao);
+printf("\n\nAlterar o Telefone do Cliente(1-sim/0-nao)? ");
+scanf("%d", &conf);
+if (conf == 1)
+{ printf("\nNovo Telefone: ");
+scanf("%d", &cadastro_aux.tele);
+printf("\nTelefone alterado com sucesso!\n\n");
+fseek(pcadastroCliente,posicao*sizeof(TCadastroCliente),SEEK_SET);
+fwrite(&cadastro_aux,sizeof(TCadastroCliente), 1,pcadastroCliente);
+mostreCliente(posicao);
+printf("\nTelefone do cliente alterado com sucesso!\n");
+}
+else 
+printf("\n\nAlteracao cancelada!\n\n");
+}
+printf("\n\nDeseja alterar outro (1-sim/0-nao)? ");
+scanf("%d", &resp);
+}while (resp ==1);
+}
+
+void listagemCliente()
+{ cabec();
+printf("\n\nListagem Geral - CLIENTES\n\n");
+linha();
+printf("CPF\t\tNome\t\tTelefone\tDependente 1\tDependente 2\n");
+linha();
+rewind(pcadastroCliente);
+fread(&cadastro_aux, sizeof(TCadastroCliente), 1, pcadastroCliente);
+while (feof(pcadastroCliente)==0)
+{ if (cadastro_aux.cpf != 0)
+printf("%d\t\t%-20s%5.1d\t%-20s%-20s\n", cadastro_aux.cpf,cadastro_aux.nome, cadastro_aux.tele, cadastro_aux.depend1, cadastro_aux.depend2);
+fread(&cadastro_aux, sizeof(TCadastroCliente), 1,pcadastroCliente);
+}
+linha();
+printf("tecle enter para voltar ao menu...");
+getche();
+}
+
+
+void listagemFilmes()
+{ cabec();
+printf("\n\nListagem Geral- FILMES\n\n");
+linha();
+printf("Codigo\t\tNome\t\t  Categoria\n");
+linha();
+rewind(pcadastroFilme);
+fread(&cadastroFilme_aux, sizeof(TCadastroFilme), 1, pcadastroFilme);
+while (feof(pcadastroFilme)==0)
+{ if (cadastroFilme_aux.codigo != 0)
+printf("%d \t\t%-20s%-20s\n", cadastroFilme_aux.codigo,cadastroFilme_aux.nomeFilme, cadastroFilme_aux.categoria);
+fread(&cadastroFilme_aux, sizeof(TCadastroFilme), 1,
+pcadastroFilme);
+}
+linha();
+printf("tecle enter para voltar ao menu...");
+getche();
+}
+
+
+
+main()
+{ int op;
+abre_arquivoCliente();
+abre_arquivoFilme();
+do{ cabec();
+printf("Opcoes: \n\n");
+printf(" 1- Cadastrar novo Cliente\n\n");
+printf(" 2- Cadastrar novo Filme\n\n");
+printf(" 3- Consultar Cliente por CPF\n\n");
+printf(" 4- Consultar filme por Codigo\n\n");
+ printf(" 5- Listagem geral - Cliente\n\n");
+printf(" 6- Listagem geral - Filmes\n\n");
+printf(" 7- Alterar telefone do Cliente \n\n");
+printf(" 8- Remover Cliente \n\n");
+printf(" 9- Remover Filme \n\n");
+printf(" 0- Sair\n");
+linha();
+printf("Informe a opcao desejada: ");
+scanf("%d", &op);
+switch(op)
+{ case 1: inserirCliente(); break;
+case 2: inserirDVD(); break;
+case 3: consultarCliente(); break;
+case 4: consultarFilme(); break;
+case 5: listagemCliente(); break;
+case 6: listagemFilmes(); break;
+case 7: alterarCliente(); break;
+case 8: removerCliente(); break;
+case 9: removerFilme(); break;
+case 0: fclose(pcadastroCliente);
+		fclose(pcadastroFilme);
+ 		break;
+default: printf("\n\n\aOpcao invalida!");
+break;
+}
+} while (op != 0);
+}
