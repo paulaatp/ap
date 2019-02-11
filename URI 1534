@@ -1,0 +1,72 @@
+#include <stdio.h>
+ 
+int main() {
+ 
+   int M, L, C;
+   
+	// M = matriz, L = linha e C= coluna
+	
+	// EOF = end of file
+	
+    while(scanf("%d", &M)!= EOF)
+    
+    {
+        
+    	while((3>M)||(M>=70))
+    	
+    	{
+    	    
+    		system("cls");
+    		
+    		scanf("%d", &M);
+    		
+		}
+		
+          for(L = 0; L < M; L++)
+          
+          {
+              
+          	for(C = 0;C < M; C++)
+          	
+          	{
+          	    
+               if(L + C == M - 1) 
+               
+			   {
+			       
+			   	printf("2");
+			   	
+			   }
+			   
+               else 
+               
+               {
+                   
+               	if(L == C) 
+               	
+               	{
+               	    
+			   	 printf("1");
+			   	 
+			   }
+			  
+               else 
+               
+               {
+                   
+               	printf("3");
+               	
+			   }
+			   
+			     }
+			     
+          	}
+			  
+			  printf("\n");
+			  
+          }
+          
+	}
+ 
+    return 0;
+}
