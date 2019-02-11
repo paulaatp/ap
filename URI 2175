@@ -1,0 +1,92 @@
+#include <stdio.h>
+ 
+int main() {
+ 
+    double O, B, I;
+	
+//	printf("Digite os tempos de Otavio, Bruno e Ian:\n");
+	
+	scanf("%lf %lf %lf", &O, &B, &I);
+	
+	while((O<0) || (O>100))
+	
+	{
+		
+		system("cls");
+		
+		printf("Tempo de Otavio invalido. Tente outro: ");
+		
+		scanf("%lf", &O);
+		
+	}
+	
+	while((B<0) || (B>100))
+	
+	{
+		
+		system("cls");
+		
+		printf("Tempo de Bruno invalido. Tente outro: ");
+		
+		scanf("%lf", &B);
+		
+	}
+	
+	while((I<0) || (I>100))
+	
+	{
+		
+		system("cls");
+		
+		printf("Tempo de Ian invalido. Tente outro: ");
+		
+		scanf("%lf", &I);
+		
+	}
+	
+	if((O<B)&&(O<I))
+	
+	{
+		
+	printf("Otavio\n");
+	
+	}
+	
+		else 
+		
+		{
+			
+			if((B<O)&&(B<I))
+			
+			{
+			
+			printf("Bruno\n");
+			
+			}
+			
+			else
+			
+			{
+				
+				if((I<B)&&(I<O))
+				
+				{
+					
+				printf("Ian\n");
+				
+				}
+				
+				else
+				
+				{
+					
+					printf("Empate\n");
+					
+				}
+				
+			}
+			
+		}
+ 
+    return 0;
+}
